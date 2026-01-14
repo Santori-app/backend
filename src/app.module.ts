@@ -7,13 +7,35 @@ import { AuthModule } from './auth/auth.module';
 import { AppCacheModule } from './cache/cache.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { GroupsModule } from './groups/groups.module';
+import { CompaniesModule } from './companies/companies.module';
+import { CustomersModule } from './customers/customers.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AppThrottlerGuard } from './auth/guards/throttler-guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     UsersModule, 
     PrismaModule,
     AuthModule,
-    AppCacheModule
+    AppCacheModule,
+    GroupsModule,
+    CompaniesModule,
+    CustomersModule,
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'rate_limit',
+          ttl: 60000,
+          limit: 50,
+        }
+      ],
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -21,7 +43,11 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AppThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

@@ -15,22 +15,106 @@ datasource db {
 }
 
 model User {
+  id             String   @id @default(uuid())
+  name           String?
+  email          String   @unique
+  phone          String?  @db.VarChar(20)
+  password       String?
+  emailVerified  Boolean  @default(false)
+  phoneVerified  Boolean  @default(false)
+
+  memberships    CompanyUser[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+
+model Company {
   id        String   @id @default(uuid())
-  name      String?
+
+  name      String
+  slug      String   @unique
+  active    Boolean  @default(true)
+
+  legalName   String?  @db.VarChar(255)
+  cnpj        String?  @unique @db.VarChar(14)
+
+  groupId   String?
+  group     Group?  @relation(fields: [groupId], references: [id])
+
+  users     CompanyUser[]
+  customers CompanyCustomer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model CompanyUser {
+  id        String   @id @default(uuid())
+
+  userId    String
+  companyId String
+
+  role      Role
+  active    Boolean  @default(true)
+
+  user      User     @relation(fields: [userId], references: [id])
+  company   Company  @relation(fields: [companyId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, companyId])
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
   email     String?  @unique
   phone     String?  @db.VarChar(20)
-  password  String?
-  role      Role
-  emailVerified   Boolean  @default(false)
-  phoneVerified   Boolean  @default(false)
+  birthDate DateTime?
+  active    Boolean  @default(true)
+
+  companies CompanyCustomer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CompanyCustomer {
+  id          String   @id @default(uuid())
+
+  customerId  String
+  companyId   String
+
+  firstVisit  DateTime @default(now())
+  lastVisit   DateTime?
+  active      Boolean  @default(true)
+
+  customer    Customer @relation(fields: [customerId], references: [id])
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  @@unique([customerId, companyId])
+}
+
+model Group {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+
+  companies Company[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum Role {
-  ADMIN
-  MANAGER
-  BARBER
-  RECEPTION
-  CUSTOMER
+  STAFF       //? Agente do sistema (Criadores do sistema)
+  SUPER_ADMIN //? Gerencia a Franquia
+  OWNER       //? Único por Company e é o responsável principal
+  ADMIN       //? Administrador com todas as funcionalidades do sistema disponível
+  MANAGER     //? Gerente da barbearia caso exista
+  BARBER      //? Barbeiro responsável por cortar o cabelo
+  RECEPTION   //? Recepcionista da barbearia caso exista
 }

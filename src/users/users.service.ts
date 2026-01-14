@@ -56,13 +56,16 @@ export class UsersService {
     }
   
     return this.prisma.user.create({
-      data,
+      data: {
+        email: data.email,
+        phone: data.phone,
+        name: data.name,
+      },
       select: {
         id: true,
         email: true,
         name: true,
         phone: true,
-        role: true,
         createdAt: true,
       },
     });
@@ -79,19 +82,6 @@ export class UsersService {
       },
       {
         requiredAll: ['email', 'phone', 'name'],
-      }
-    );
-  }
-
-  async createCustomers(createUserCustomerDto: CreateUserCustomerDto) {
-    return this.createUser(
-      {
-        email: createUserCustomerDto.email,
-        phone: createUserCustomerDto.phone,
-        role: Role.CUSTOMER,
-      },
-      {
-        requiredAny: ['email', 'phone'],
       }
     );
   }
@@ -122,19 +112,20 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { email: email } });
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  findOne(id: string) {
+    return this.prisma.user.findUnique(
+      { 
+        where: { 
+          id: id 
+        }, 
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          phone: true,
+          createdAt: true,
+        }
+      }
+    );
   }
 }

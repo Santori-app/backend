@@ -6,7 +6,6 @@ export class User {
   email?: string;
   phone?: string;
   password?: string;
-  role: Role;
   emailVerified: boolean;
   phoneVerified: boolean;
   createdAt: Date;

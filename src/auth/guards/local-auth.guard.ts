@@ -1,6 +1,5 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Jwt } from 'src/decorators/current-jwt.decorator';
   
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {

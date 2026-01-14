@@ -22,3 +22,28 @@ export * from './enums';
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Company
+ * 
+ */
+export type Company = Prisma.CompanyModel
+/**
+ * Model CompanyUser
+ * 
+ */
+export type CompanyUser = Prisma.CompanyUserModel
+/**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel
+/**
+ * Model CompanyCustomer
+ * 
+ */
+export type CompanyCustomer = Prisma.CompanyCustomerModel
+/**
+ * Model Group
+ * 
+ */
+export type Group = Prisma.GroupModel

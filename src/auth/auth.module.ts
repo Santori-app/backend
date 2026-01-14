@@ -16,7 +16,7 @@ import { AppCacheModule } from 'src/cache/cache.module';
       {
         secret: process.env.JWT_SECRET,
         signOptions: {
-          expiresIn: '30d'
+          expiresIn: Number(process.env.JWT_EXPIRES_IN) //? 7 Dias de expiração
         }
       }
     ),
