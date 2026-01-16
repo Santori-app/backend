@@ -45,12 +45,25 @@ export class AuthService {
       id: cu.company.id,
       name: cu.company.name,
       slug: cu.company.slug,
-      role: cu.role, // role do user nessa company
+      role: cu.role,
     }));
   }
 
-  login(user: User): UserToken {
-    const payload : UserPayload = {
+  async getMe(user: User) {
+    const companies = await this.getUserCompanies(user.id);
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      companies: companies
+    };
+
+    return payload;
+  }
+
+  async login(user: User) {
+    const payload = {
       sub: user.id,
       email: user.email,
       name: user.name

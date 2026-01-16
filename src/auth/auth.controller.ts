@@ -8,6 +8,8 @@ import { User } from 'src/users/entities/user.entity';
 import { Jwt } from 'src/decorators/current-jwt.decorator';
 import { Throttle } from '@nestjs/throttler';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
+import { Company } from 'src/companies/decorators/company.decorator';
+import { CompanyContext } from 'src/companies/interfaces/company-context.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +41,7 @@ export class AuthController {
 
   @Get('me')
   async me(@CurrentUser() user: User) {
-    return user;
+    return await this.authService.getMe(user);
   }
   
   @Get('me/companies')
@@ -51,7 +53,7 @@ export class AuthController {
       id: c.id,
       name: c.name,
       slug: c.slug,
-      role: c.role, // papel do usuário nessa company
+      role: c.role,
     }));
   }
 
