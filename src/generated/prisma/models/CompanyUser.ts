@@ -30,6 +30,7 @@ export type CompanyUserMinAggregateOutputType = {
   companyId: string | null
   role: $Enums.Role | null
   active: boolean | null
+  verified: boolean | null
   createdAt: Date | null
 }
 
@@ -39,6 +40,7 @@ export type CompanyUserMaxAggregateOutputType = {
   companyId: string | null
   role: $Enums.Role | null
   active: boolean | null
+  verified: boolean | null
   createdAt: Date | null
 }
 
@@ -48,6 +50,7 @@ export type CompanyUserCountAggregateOutputType = {
   companyId: number
   role: number
   active: number
+  verified: number
   createdAt: number
   _all: number
 }
@@ -59,6 +62,7 @@ export type CompanyUserMinAggregateInputType = {
   companyId?: true
   role?: true
   active?: true
+  verified?: true
   createdAt?: true
 }
 
@@ -68,6 +72,7 @@ export type CompanyUserMaxAggregateInputType = {
   companyId?: true
   role?: true
   active?: true
+  verified?: true
   createdAt?: true
 }
 
@@ -77,6 +82,7 @@ export type CompanyUserCountAggregateInputType = {
   companyId?: true
   role?: true
   active?: true
+  verified?: true
   createdAt?: true
   _all?: true
 }
@@ -159,6 +165,7 @@ export type CompanyUserGroupByOutputType = {
   companyId: string
   role: $Enums.Role
   active: boolean
+  verified: boolean
   createdAt: Date
   _count: CompanyUserCountAggregateOutputType | null
   _min: CompanyUserMinAggregateOutputType | null
@@ -189,6 +196,7 @@ export type CompanyUserWhereInput = {
   companyId?: Prisma.StringFilter<"CompanyUser"> | string
   role?: Prisma.EnumRoleFilter<"CompanyUser"> | $Enums.Role
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
+  verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -200,6 +208,7 @@ export type CompanyUserOrderByWithRelationInput = {
   companyId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
@@ -216,6 +225,7 @@ export type CompanyUserWhereUniqueInput = Prisma.AtLeast<{
   companyId?: Prisma.StringFilter<"CompanyUser"> | string
   role?: Prisma.EnumRoleFilter<"CompanyUser"> | $Enums.Role
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
+  verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -227,6 +237,7 @@ export type CompanyUserOrderByWithAggregationInput = {
   companyId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CompanyUserCountOrderByAggregateInput
   _max?: Prisma.CompanyUserMaxOrderByAggregateInput
@@ -242,6 +253,7 @@ export type CompanyUserScalarWhereWithAggregatesInput = {
   companyId?: Prisma.StringWithAggregatesFilter<"CompanyUser"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"CompanyUser"> | $Enums.Role
   active?: Prisma.BoolWithAggregatesFilter<"CompanyUser"> | boolean
+  verified?: Prisma.BoolWithAggregatesFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CompanyUser"> | Date | string
 }
 
@@ -249,6 +261,7 @@ export type CompanyUserCreateInput = {
   id?: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
@@ -260,6 +273,7 @@ export type CompanyUserUncheckedCreateInput = {
   companyId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -267,6 +281,7 @@ export type CompanyUserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
@@ -278,6 +293,7 @@ export type CompanyUserUncheckedUpdateInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -287,6 +303,7 @@ export type CompanyUserCreateManyInput = {
   companyId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -294,6 +311,7 @@ export type CompanyUserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -303,6 +321,7 @@ export type CompanyUserUncheckedUpdateManyInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -333,6 +352,7 @@ export type CompanyUserCountOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -342,6 +362,7 @@ export type CompanyUserMaxOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -351,6 +372,7 @@ export type CompanyUserMinOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -446,6 +468,7 @@ export type CompanyUserCreateWithoutUserInput = {
   id?: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
@@ -455,6 +478,7 @@ export type CompanyUserUncheckedCreateWithoutUserInput = {
   companyId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -493,6 +517,7 @@ export type CompanyUserScalarWhereInput = {
   companyId?: Prisma.StringFilter<"CompanyUser"> | string
   role?: Prisma.EnumRoleFilter<"CompanyUser"> | $Enums.Role
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
+  verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
 }
 
@@ -500,6 +525,7 @@ export type CompanyUserCreateWithoutCompanyInput = {
   id?: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
 }
@@ -509,6 +535,7 @@ export type CompanyUserUncheckedCreateWithoutCompanyInput = {
   userId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -543,6 +570,7 @@ export type CompanyUserCreateManyUserInput = {
   companyId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -550,6 +578,7 @@ export type CompanyUserUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
@@ -559,6 +588,7 @@ export type CompanyUserUncheckedUpdateWithoutUserInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -567,6 +597,7 @@ export type CompanyUserUncheckedUpdateManyWithoutUserInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -575,6 +606,7 @@ export type CompanyUserCreateManyCompanyInput = {
   userId: string
   role: $Enums.Role
   active?: boolean
+  verified?: boolean
   createdAt?: Date | string
 }
 
@@ -582,6 +614,7 @@ export type CompanyUserUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
 }
@@ -591,6 +624,7 @@ export type CompanyUserUncheckedUpdateWithoutCompanyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -599,6 +633,7 @@ export type CompanyUserUncheckedUpdateManyWithoutCompanyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -610,6 +645,7 @@ export type CompanyUserSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   companyId?: boolean
   role?: boolean
   active?: boolean
+  verified?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -623,10 +659,11 @@ export type CompanyUserSelectScalar = {
   companyId?: boolean
   role?: boolean
   active?: boolean
+  verified?: boolean
   createdAt?: boolean
 }
 
-export type CompanyUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "role" | "active" | "createdAt", ExtArgs["result"]["companyUser"]>
+export type CompanyUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "role" | "active" | "verified" | "createdAt", ExtArgs["result"]["companyUser"]>
 export type CompanyUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -644,6 +681,7 @@ export type $CompanyUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
     companyId: string
     role: $Enums.Role
     active: boolean
+    verified: boolean
     createdAt: Date
   }, ExtArgs["result"]["companyUser"]>
   composites: {}
@@ -1021,6 +1059,7 @@ export interface CompanyUserFieldRefs {
   readonly companyId: Prisma.FieldRef<"CompanyUser", 'String'>
   readonly role: Prisma.FieldRef<"CompanyUser", 'Role'>
   readonly active: Prisma.FieldRef<"CompanyUser", 'Boolean'>
+  readonly verified: Prisma.FieldRef<"CompanyUser", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CompanyUser", 'DateTime'>
 }
     

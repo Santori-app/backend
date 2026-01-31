@@ -431,6 +431,10 @@ export type CompanyOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type CompanyCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.CompanyCreateWithoutUsersInput, Prisma.CompanyUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutUsersInput

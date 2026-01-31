@@ -16,12 +16,11 @@ datasource db {
 
 model User {
   id             String   @id @default(uuid())
-  name           String?
-  email          String   @unique
+  name           String
+  email          String?  @unique
+  username       String   @unique
   phone          String?  @db.VarChar(20)
   password       String?
-  emailVerified  Boolean  @default(false)
-  phoneVerified  Boolean  @default(false)
 
   memberships    CompanyUser[]
 
@@ -59,6 +58,7 @@ model CompanyUser {
 
   role      Role
   active    Boolean  @default(true)
+  verified  Boolean  @default(false)
 
   user      User     @relation(fields: [userId], references: [id])
   company   Company  @relation(fields: [companyId], references: [id])

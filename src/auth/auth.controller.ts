@@ -1,10 +1,10 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthRequest } from 'src/common/interfaces/AuthRequest';
 import { IsPublic } from 'src/decorators/is-public.decorator';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { CurrentUserEntity } from 'src/users/entities/currentUserDecorator.entity';
 import { Jwt } from 'src/decorators/current-jwt.decorator';
 import { Throttle } from '@nestjs/throttler';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
@@ -28,33 +28,19 @@ export class AuthController {
   @IsPublic()
   @Post('generate-hash')
   @HttpCode(HttpStatus.OK)
-  async generateHash(@Request() req: AuthRequest) {
-    return PasswordHashUtils.toHash('admin123');
+  async generateHash(@Body() payload: any) {
+    return PasswordHashUtils.toHash(payload.password);
   }
   //! EXCLUIR POSTERIORMENTE
 
-  @Post('/select-company')
-  @IsPublic()
-  async selectCompany(@CurrentUser() user: User, @Jwt() jwt: string) {
-    return this.authService.logout(jwt);
-  }
-
   @Get('me')
-  async me(@CurrentUser() user: User) {
+  async me(@CurrentUser() user: CurrentUserEntity) {
     return await this.authService.getMe(user);
   }
   
   @Get('me/companies')
-  async getUserCompanies(@CurrentUser() user: User) {
-    
-    const companies = await this.authService.getUserCompanies(user.id);
-
-    return companies.map(c => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      role: c.role,
-    }));
+  async getUserCompanies(@CurrentUser() user: CurrentUserEntity) {
+    return await this.authService.getUserCompanies(user.id);
   }
 
   // @Post('logout')

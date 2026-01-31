@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { User } from "src/users/entities/user.entity";
+import { CurrentUserEntity } from "src/users/entities/currentUserDecorator.entity";
 
 export interface AuthRequest extends Request {
-  user: User
+  user: CurrentUserEntity
 }

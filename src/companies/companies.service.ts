@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ApiError } from 'src/common/errors/api-error.exception';
 import { ErrorCode } from 'src/common/errors/error-codes.enum';
 import { Company } from './entities/company.entity';
+import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 
 @Injectable()
 export class CompaniesService {
@@ -15,54 +16,31 @@ export class CompaniesService {
     admin: UserResponseDto;
   }> {
     try {
-      return await this.prisma.$transaction(async (tx) => {
-  
-        const slugExists = await tx.company.findUnique({
-          where: { slug: createCompanyOnboardingDto.company.slug },
-          select: { id: true },
-        });
-  
-        if (slugExists) {
-          ApiError.conflict(ErrorCode.COMPANY_SLUG_ALREADY_EXISTS);
-        }
-        
-        if (createCompanyOnboardingDto.company.cnpj) {
-          const cnpjExists = await tx.company.findUnique({
-            where: { cnpj: createCompanyOnboardingDto.company.cnpj },
-            select: { id: true },
-          });
+      if (await this.isSlugAlreadyExists(createCompanyOnboardingDto.company.slug)) {
+        ApiError.conflict(ErrorCode.COMPANY_SLUG_ALREADY_EXISTS);
+      }
 
-          if (cnpjExists) {
-            ApiError.conflict(ErrorCode.COMPANY_CNPJ_ALREADY_EXISTS);
-          }
-        }
-  
-        let user = await tx.user.findUnique({
-          where: { email: createCompanyOnboardingDto.admin.email },
+      if (await this.isCnpjAlreadyExists(createCompanyOnboardingDto.company.cnpj)) {
+        ApiError.conflict(ErrorCode.COMPANY_CNPJ_ALREADY_EXISTS);
+      }
+
+      return await this.prisma.$transaction(async (tx) => {
+        const user = await tx.user.create({
+          data: {
+            email: createCompanyOnboardingDto.admin.email,
+            name: createCompanyOnboardingDto.admin.name,
+            phone: createCompanyOnboardingDto.admin.phone,
+            username: createCompanyOnboardingDto.admin.username,
+            password: PasswordHashUtils.toHash(createCompanyOnboardingDto.company.slug),
+          },
           select: {
             id: true,
             email: true,
             name: true,
             phone: true,
+            username: true
           },
         });
-  
-        if (!user) {
-          user = await tx.user.create({
-            data: {
-              email: createCompanyOnboardingDto.admin.email,
-              name: createCompanyOnboardingDto.admin.name,
-              phone: createCompanyOnboardingDto.admin.phone,
-              password: null,
-            },
-            select: {
-              id: true,
-              email: true,
-              name: true,
-              phone: true,
-            },
-          });
-        }
   
         const company = await tx.company.create({
           data: {
@@ -93,5 +71,40 @@ export class CompaniesService {
   
       throw error;
     }
+  }
+
+  async isCnpjAlreadyExists(cnpj: string) {
+    const cnpjExists = await this.prisma.company.findUnique({
+      where: { cnpj: cnpj },
+      select: { id: true },
+    });
+
+    if (cnpjExists) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async isSlugAlreadyExists(slug: string) {
+    const slugExists = await this.prisma.company.findUnique({
+      where: { slug: slug },
+      select: { id: true },
+    });
+
+    if (slugExists) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async findBySlug(slug: string) {
+    return this.prisma.company.findFirst({
+      where: {
+        slug,
+        active: true,
+      },
+    });
   }
 }

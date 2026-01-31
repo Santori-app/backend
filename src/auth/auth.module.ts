@@ -6,12 +6,14 @@ import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AppCacheModule } from 'src/cache/cache.module';
+import { CompaniesModule } from 'src/companies/companies.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   imports: [
     UsersModule, 
+    CompaniesModule,
     JwtModule.register(
       {
         secret: process.env.JWT_SECRET,

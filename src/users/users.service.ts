@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserCustomerDto } from './dto/create-user-customer.dto';
-import { User } from './entities/user.entity';
+import { CurrentUserEntity } from './entities/currentUserDecorator.entity';
 import { ObjectUtils } from 'src/utils/Object.utils';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,111 +8,98 @@ import { Role } from 'src/generated/prisma/enums';
 import { CreateUserBarberDto } from './dto/create-user-barber.dto';
 import { ApiError } from 'src/common/errors/api-error.exception';
 import { ErrorCode } from 'src/common/errors/error-codes.enum';
-import { CreateUserAdminDto } from './dto/create-user-admin.dto';
 
+interface CreateUser {
+  email?  : string;
+  name    : string;
+  phone?  : string;
+  username: string;
+  password: string;
+}
 @Injectable()
 export class UsersService {
   
   constructor(private prisma: PrismaService) {}
 
-  private async createUser(
-    data: {
-      email?: string;
-      phone?: string;
-      name?: string;
-      role: Role;
-    },
-    options: {
-      requiredAll?: (keyof typeof data)[];
-      requiredAny?: (keyof typeof data)[];
-    }
-  ) {
-    const { requiredAll = [], requiredAny = [] } = options;
-
-    for (const field of requiredAll) {
-      if (!data[field]) {
-        ApiError.badRequest(ErrorCode.MISSING_REQUIRED_FIELDS);
-      }
-    }
-
-    if (requiredAny.length > 0 && !requiredAny.some((field) => Boolean(data[field]))) {
-      ApiError.badRequest(ErrorCode.MISSING_REQUIRED_FIELDS);
-    }
-
-    const orConditions = [
-      data.email ? { email: data.email } : undefined,
-      data.phone ? { phone: data.phone } : undefined,
-    ].filter(Boolean);
-    
-    const existingUser = await this.prisma.user.findFirst({
-      where: {
-        OR: orConditions,
-      },
-      select: { id: true },
-    });
-  
-    if (existingUser) {
+  private async createUser(user : CreateUser) {
+    if (await this.isExistsUsername(user.username)) 
       ApiError.conflict(ErrorCode.USER_ALREADY_EXISTS);
-    }
   
     return this.prisma.user.create({
       data: {
-        email: data.email,
-        phone: data.phone,
-        name: data.name,
+        email: user.email,
+        phone: user.phone,
+        name: user.name,
+        username: user.username,
+        password: user.password
       },
       select: {
         id: true,
-        email: true,
         name: true,
-        phone: true,
-        createdAt: true,
-      },
+        email: true,
+        phone: true
+      }
+    });
+  }
+
+  async isExistsUsername(username: string) {
+    const existingUser = await this.findByUsername(username);
+
+    if (!existingUser) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async createBarber(companyId: string, createUserBarberDto: CreateUserBarberDto) {
+    return this.prisma.$transaction(async (tx) => {
+      if (!createUserBarberDto.username || !createUserBarberDto.name){
+        ApiError.badRequest(ErrorCode.MISSING_REQUIRED_FIELDS);
+      }
+
+      const createUser : CreateUser = {
+        name: createUserBarberDto.name,
+        email: createUserBarberDto.email,
+        phone: createUserBarberDto.phone,
+        username: createUserBarberDto.username,
+        password: PasswordHashUtils.toHash(createUserBarberDto.password)
+      }
+
+      const user = await this.createUser(createUser);
+  
+      await tx.companyUser.create({
+        data: {
+          userId: user.id,
+          companyId,
+          role: Role.BARBER,
+        },
+      });
+  
+      return user;
     });
   }
   
-
-  async createAdmins(createUserAdminDto: CreateUserAdminDto) {
-    return this.createUser(
-      {
-        email: createUserAdminDto.email,
-        phone: createUserAdminDto.phone,
-        name: createUserAdminDto.name,
-        role: Role.ADMIN,
-      },
-      {
-        requiredAll: ['email', 'phone', 'name'],
-      }
-    );
-  }
-
-  async createBarbers(createUserBarberDto: CreateUserBarberDto) {
-    console.log(createUserBarberDto)
-    return this.createUser(
-      {
-        email: createUserBarberDto.email,
-        phone: createUserBarberDto.phone,
-        role: Role.BARBER,
-      },
-      {
-        requiredAny: ['email', 'phone'],
-      }
-    );
-  }
-
-  async createReceptions() {
-
-  }
-
-  async createManagers() {
-
-  }
 
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email: email } });
   }
 
-  findOne(id: string) {
+  async findByUsername(username: string) {
+    return this.prisma.user.findUnique({ where: { username: username } });
+  }
+
+  async findCompanyUser(userId: string, companyId: string) {
+    return this.prisma.companyUser.findFirst({
+      where: {
+        userId,
+        companyId,
+        active: true,
+      },
+    });    
+  }
+
+  findById(id: string) {
     return this.prisma.user.findUnique(
       { 
         where: { 
@@ -128,4 +115,47 @@ export class UsersService {
       }
     );
   }
+
+  async findAll(companyId: string) {
+    if (!companyId) {
+      ApiError.badRequest(ErrorCode.COMPANY_CONTEXT_REQUIRED);
+    }
+  
+    const companyUsers = await this.prisma.companyUser.findMany({
+      where: {
+        companyId,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      select: {
+        role: true,
+        active: true,
+        verified: true,
+        createdAt: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            email: true,
+            phone: true,
+          },
+        },
+      }      
+    });
+  
+    return companyUsers.map((cu) => ({
+      id: cu.user.id,
+      name: cu.user.name,
+      username: cu.user.username,
+      email: cu.user.email,
+      phone: cu.user.phone,
+      role: cu.role,
+      active: cu.active,
+      verified: cu.verified,
+      createdAt: cu.createdAt,
+    }));
+  }
+  
 }

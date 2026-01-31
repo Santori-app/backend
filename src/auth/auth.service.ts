@@ -3,10 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { CacheService } from 'src/cache/cache.service';
 import { ApiError } from 'src/common/errors/api-error.exception';
 import { ErrorCode } from 'src/common/errors/error-codes.enum';
-import { UserPayload } from 'src/common/interfaces/UserPayload';
-import { UserToken } from 'src/common/interfaces/UserToken';
+import { CompaniesService } from 'src/companies/companies.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/users/entities/user.entity';
+import { CurrentUserEntity } from 'src/users/entities/currentUserDecorator.entity';
 import { UsersService } from 'src/users/users.service';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 
@@ -14,59 +13,79 @@ import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 export class AuthService {
   constructor(
     private readonly usersService: UsersService, 
+    private readonly companyService: CompaniesService,
     private readonly jwtService: JwtService,
     private readonly cacheManager: CacheService,
     private prisma: PrismaService
   ) {}
 
-  async validateUser(email: string, password: string) {
-    const user = await this.usersService.findByEmail(email);
+  async validateUser(username: string, password: string) {
+    const [login, companySlug] = username.split('@');
 
-    if (user) {
-      const isPasswordValid = PasswordHashUtils.isValid(password, user.password);
+    if (!login || !companySlug) {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
 
-      if (isPasswordValid) {
-        delete user.password;
+    const company = await this.companyService.findBySlug(companySlug);
 
-        return user;
-      }
+    if (!company) {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
     }
     
-    ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    const user = await this.usersService.findByUsername(login);
+
+    if (!user) {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    const companyUser = await this.usersService.findCompanyUser(user.id, company.id);
+
+    if (!companyUser) {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    const isPasswordValid = PasswordHashUtils.isValid(password, user.password);
+    if (!isPasswordValid) {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    delete user.password;
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      companyId: company.id,
+      role: companyUser.role,
+    };
   }
 
   async getUserCompanies(userId: string) {
-    const companies = await this.prisma.companyUser.findMany({
+    const companyUser = await this.prisma.companyUser.findMany({
       where: { userId },
       include: { company: true },
     });
 
-    return companies.map(cu => ({
-      id: cu.company.id,
-      name: cu.company.name,
-      slug: cu.company.slug,
-      role: cu.role,
+    return companyUser.map(item => ({
+      id: item.company.id,
+      name: item.company.name,
+      slug: item.company.slug,
+      role: item.role,
     }));
   }
 
-  async getMe(user: User) {
+  async getMe(user: CurrentUserEntity) {
+    return user;
+  }
+
+  async login(user: CurrentUserEntity) {
     const companies = await this.getUserCompanies(user.id);
 
     const payload = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      companies: companies
-    };
-
-    return payload;
-  }
-
-  async login(user: User) {
-    const payload = {
       sub: user.id,
-      email: user.email,
-      name: user.name
+      role: companies[0].role,
+      companyId: companies[0].id,
+      companyName: companies[0].name
     };
 
     const jwtToken = this.jwtService.sign(payload);

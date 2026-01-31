@@ -10,18 +10,17 @@ class CompanyDto {
   @IsNotEmpty()
   slug: string;
 
-  @IsOptional()
   @IsString()
-  legalName?: string;
+  legalName: string;
 
-  @IsOptional()
   @Matches(/^\d{14}$/)
-  cnpj?: string;
+  cnpj: string;
 }
 
 class AdminUserDto {
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsString()
   @IsNotEmpty()
@@ -29,6 +28,10 @@ class AdminUserDto {
 
   @IsOptional()
   phone?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 }
 
 export class CreateCompanyOnboardingDto {
