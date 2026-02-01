@@ -20,3 +20,19 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const PlanCycle = {
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+} as const
+
+export type PlanCycle = (typeof PlanCycle)[keyof typeof PlanCycle]
+
+
+export const OfferingType = {
+  SERVICE: 'SERVICE',
+  PRODUCT: 'PRODUCT'
+} as const
+
+export type OfferingType = (typeof OfferingType)[keyof typeof OfferingType]

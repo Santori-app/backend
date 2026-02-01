@@ -28,7 +28,6 @@ model User {
   updatedAt      DateTime @updatedAt
 }
 
-
 model Company {
   id        String   @id @default(uuid())
 
@@ -36,14 +35,16 @@ model Company {
   slug      String   @unique
   active    Boolean  @default(true)
 
-  legalName   String?  @db.VarChar(255)
-  cnpj        String?  @unique @db.VarChar(14)
+  legalName String?  @db.VarChar(255)
+  cnpj      String?  @unique @db.VarChar(14)
 
   groupId   String?
   group     Group?  @relation(fields: [groupId], references: [id])
 
   users     CompanyUser[]
   customers CompanyCustomer[]
+  offerings Offering[]
+  plans     Plan[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -68,6 +69,62 @@ model CompanyUser {
   @@unique([userId, companyId])
 }
 
+model Offering {
+  id                String   @id @default(uuid())
+  companyId         String
+
+  name              String
+  description       String?
+  type              OfferingType
+  
+  price             Int        // em centavos
+  timeToExecute     Int?       // minutos
+
+  commissionPercent Int?        // 1 a 100
+
+  active            Boolean    @default(true)
+
+  planServices      PlanService[]
+
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  company           Company  @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
+}
+
+model Plan {
+  id           String   @id @default(uuid())
+  companyId    String
+
+  name         String
+  description  String?
+  price        Int
+  billingCycle PlanCycle
+  active       Boolean @default(true)
+
+  planServices    PlanService[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company      Company  @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
+}
+
+model PlanService {
+  id          String   @id @default(uuid())
+  planId      String
+  offeringId  String
+  quantity    Int
+
+  plan        Plan     @relation(fields: [planId], references: [id])
+  offering    Offering @relation(fields: [offeringId], references: [id])
+
+  @@unique([planId, offeringId]) // impede duplicar o mesmo serviço
+}
 model Customer {
   id        String   @id @default(uuid())
   name      String
@@ -117,4 +174,14 @@ enum Role {
   MANAGER     //? Gerente da barbearia caso exista
   BARBER      //? Barbeiro responsável por cortar o cabelo
   RECEPTION   //? Recepcionista da barbearia caso exista
+}
+
+enum PlanCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum OfferingType {
+  SERVICE
+  PRODUCT
 }

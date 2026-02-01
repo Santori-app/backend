@@ -33,6 +33,21 @@ export type Company = Prisma.CompanyModel
  */
 export type CompanyUser = Prisma.CompanyUserModel
 /**
+ * Model Offering
+ * 
+ */
+export type Offering = Prisma.OfferingModel
+/**
+ * Model Plan
+ * 
+ */
+export type Plan = Prisma.PlanModel
+/**
+ * Model PlanService
+ * 
+ */
+export type PlanService = Prisma.PlanServiceModel
+/**
  * Model Customer
  * 
  */

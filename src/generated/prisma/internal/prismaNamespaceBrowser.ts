@@ -54,6 +54,9 @@ export const ModelName = {
   User: 'User',
   Company: 'Company',
   CompanyUser: 'CompanyUser',
+  Offering: 'Offering',
+  Plan: 'Plan',
+  PlanService: 'PlanService',
   Customer: 'Customer',
   CompanyCustomer: 'CompanyCustomer',
   Group: 'Group'
@@ -115,6 +118,48 @@ export const CompanyUserScalarFieldEnum = {
 } as const
 
 export type CompanyUserScalarFieldEnum = (typeof CompanyUserScalarFieldEnum)[keyof typeof CompanyUserScalarFieldEnum]
+
+
+export const OfferingScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  price: 'price',
+  timeToExecute: 'timeToExecute',
+  commissionPercent: 'commissionPercent',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OfferingScalarFieldEnum = (typeof OfferingScalarFieldEnum)[keyof typeof OfferingScalarFieldEnum]
+
+
+export const PlanScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  billingCycle: 'billingCycle',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
+
+
+export const PlanServiceScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  offeringId: 'offeringId',
+  quantity: 'quantity'
+} as const
+
+export type PlanServiceScalarFieldEnum = (typeof PlanServiceScalarFieldEnum)[keyof typeof PlanServiceScalarFieldEnum]
 
 
 export const CustomerScalarFieldEnum = {
@@ -201,6 +246,35 @@ export const CompanyUserOrderByRelevanceFieldEnum = {
 } as const
 
 export type CompanyUserOrderByRelevanceFieldEnum = (typeof CompanyUserOrderByRelevanceFieldEnum)[keyof typeof CompanyUserOrderByRelevanceFieldEnum]
+
+
+export const OfferingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OfferingOrderByRelevanceFieldEnum = (typeof OfferingOrderByRelevanceFieldEnum)[keyof typeof OfferingOrderByRelevanceFieldEnum]
+
+
+export const PlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type PlanOrderByRelevanceFieldEnum = (typeof PlanOrderByRelevanceFieldEnum)[keyof typeof PlanOrderByRelevanceFieldEnum]
+
+
+export const PlanServiceOrderByRelevanceFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  offeringId: 'offeringId'
+} as const
+
+export type PlanServiceOrderByRelevanceFieldEnum = (typeof PlanServiceOrderByRelevanceFieldEnum)[keyof typeof PlanServiceOrderByRelevanceFieldEnum]
 
 
 export const CustomerOrderByRelevanceFieldEnum = {

@@ -13,6 +13,8 @@ import { CustomersModule } from './customers/customers.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppThrottlerGuard } from './auth/guards/throttler-guard';
 import { ConfigModule } from '@nestjs/config';
+import { OfferingsModule } from './offerings/offerings.module';
+import { PlansModule } from './plans/plans.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    OfferingsModule,
+    PlansModule,
   ],
   controllers: [AppController],
   providers: [

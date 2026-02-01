@@ -1,7 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserCustomerDto } from './dto/create-user-customer.dto';
-import { CurrentUserEntity } from './entities/currentUserDecorator.entity';
-import { ObjectUtils } from 'src/utils/Object.utils';
+import { Injectable } from '@nestjs/common';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Role } from 'src/generated/prisma/enums';
