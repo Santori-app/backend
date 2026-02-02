@@ -24,7 +24,8 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const PlanCycle = {
   MONTHLY: 'MONTHLY',
-  YEARLY: 'YEARLY'
+  YEARLY: 'YEARLY',
+  WEEKLY: 'WEEKLY'
 } as const
 
 export type PlanCycle = (typeof PlanCycle)[keyof typeof PlanCycle]

@@ -179,6 +179,7 @@ enum Role {
 enum PlanCycle {
   MONTHLY
   YEARLY
+  WEEKLY
 }
 
 enum OfferingType {
