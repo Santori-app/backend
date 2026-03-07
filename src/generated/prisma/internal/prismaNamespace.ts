@@ -1068,7 +1068,8 @@ export const CompanyScalarFieldEnum = {
   cnpj: 'cnpj',
   groupId: 'groupId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
@@ -1081,7 +1082,8 @@ export const CompanyUserScalarFieldEnum = {
   role: 'role',
   active: 'active',
   verified: 'verified',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type CompanyUserScalarFieldEnum = (typeof CompanyUserScalarFieldEnum)[keyof typeof CompanyUserScalarFieldEnum]

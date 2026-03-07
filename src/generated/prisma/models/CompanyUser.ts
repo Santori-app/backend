@@ -32,6 +32,7 @@ export type CompanyUserMinAggregateOutputType = {
   active: boolean | null
   verified: boolean | null
   createdAt: Date | null
+  deletedAt: Date | null
 }
 
 export type CompanyUserMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type CompanyUserMaxAggregateOutputType = {
   active: boolean | null
   verified: boolean | null
   createdAt: Date | null
+  deletedAt: Date | null
 }
 
 export type CompanyUserCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type CompanyUserCountAggregateOutputType = {
   active: number
   verified: number
   createdAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type CompanyUserMinAggregateInputType = {
   active?: true
   verified?: true
   createdAt?: true
+  deletedAt?: true
 }
 
 export type CompanyUserMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type CompanyUserMaxAggregateInputType = {
   active?: true
   verified?: true
   createdAt?: true
+  deletedAt?: true
 }
 
 export type CompanyUserCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type CompanyUserCountAggregateInputType = {
   active?: true
   verified?: true
   createdAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type CompanyUserGroupByOutputType = {
   active: boolean
   verified: boolean
   createdAt: Date
+  deletedAt: Date | null
   _count: CompanyUserCountAggregateOutputType | null
   _min: CompanyUserMinAggregateOutputType | null
   _max: CompanyUserMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type CompanyUserWhereInput = {
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
   verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"CompanyUser"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
@@ -210,6 +218,7 @@ export type CompanyUserOrderByWithRelationInput = {
   active?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
   _relevance?: Prisma.CompanyUserOrderByRelevanceInput
@@ -227,6 +236,7 @@ export type CompanyUserWhereUniqueInput = Prisma.AtLeast<{
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
   verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"CompanyUser"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id" | "userId_companyId">
@@ -239,6 +249,7 @@ export type CompanyUserOrderByWithAggregationInput = {
   active?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CompanyUserCountOrderByAggregateInput
   _max?: Prisma.CompanyUserMaxOrderByAggregateInput
   _min?: Prisma.CompanyUserMinOrderByAggregateInput
@@ -255,6 +266,7 @@ export type CompanyUserScalarWhereWithAggregatesInput = {
   active?: Prisma.BoolWithAggregatesFilter<"CompanyUser"> | boolean
   verified?: Prisma.BoolWithAggregatesFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CompanyUser"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CompanyUser"> | Date | string | null
 }
 
 export type CompanyUserCreateInput = {
@@ -263,6 +275,7 @@ export type CompanyUserCreateInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
@@ -275,6 +288,7 @@ export type CompanyUserUncheckedCreateInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserUpdateInput = {
@@ -283,6 +297,7 @@ export type CompanyUserUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
@@ -295,6 +310,7 @@ export type CompanyUserUncheckedUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserCreateManyInput = {
@@ -305,6 +321,7 @@ export type CompanyUserCreateManyInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserUpdateManyMutationInput = {
@@ -313,6 +330,7 @@ export type CompanyUserUpdateManyMutationInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserUncheckedUpdateManyInput = {
@@ -323,6 +341,7 @@ export type CompanyUserUncheckedUpdateManyInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserListRelationFilter = {
@@ -354,6 +373,7 @@ export type CompanyUserCountOrderByAggregateInput = {
   active?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyUserMaxOrderByAggregateInput = {
@@ -364,6 +384,7 @@ export type CompanyUserMaxOrderByAggregateInput = {
   active?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyUserMinOrderByAggregateInput = {
@@ -374,6 +395,7 @@ export type CompanyUserMinOrderByAggregateInput = {
   active?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyUserCreateNestedManyWithoutUserInput = {
@@ -470,6 +492,7 @@ export type CompanyUserCreateWithoutUserInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
 
@@ -480,6 +503,7 @@ export type CompanyUserUncheckedCreateWithoutUserInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserCreateOrConnectWithoutUserInput = {
@@ -519,6 +543,7 @@ export type CompanyUserScalarWhereInput = {
   active?: Prisma.BoolFilter<"CompanyUser"> | boolean
   verified?: Prisma.BoolFilter<"CompanyUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CompanyUser"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"CompanyUser"> | Date | string | null
 }
 
 export type CompanyUserCreateWithoutCompanyInput = {
@@ -527,6 +552,7 @@ export type CompanyUserCreateWithoutCompanyInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
 }
 
@@ -537,6 +563,7 @@ export type CompanyUserUncheckedCreateWithoutCompanyInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserCreateOrConnectWithoutCompanyInput = {
@@ -572,6 +599,7 @@ export type CompanyUserCreateManyUserInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserUpdateWithoutUserInput = {
@@ -580,6 +608,7 @@ export type CompanyUserUpdateWithoutUserInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -590,6 +619,7 @@ export type CompanyUserUncheckedUpdateWithoutUserInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserUncheckedUpdateManyWithoutUserInput = {
@@ -599,6 +629,7 @@ export type CompanyUserUncheckedUpdateManyWithoutUserInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserCreateManyCompanyInput = {
@@ -608,6 +639,7 @@ export type CompanyUserCreateManyCompanyInput = {
   active?: boolean
   verified?: boolean
   createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUserUpdateWithoutCompanyInput = {
@@ -616,6 +648,7 @@ export type CompanyUserUpdateWithoutCompanyInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
 }
 
@@ -626,6 +659,7 @@ export type CompanyUserUncheckedUpdateWithoutCompanyInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUserUncheckedUpdateManyWithoutCompanyInput = {
@@ -635,6 +669,7 @@ export type CompanyUserUncheckedUpdateManyWithoutCompanyInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -647,6 +682,7 @@ export type CompanyUserSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   active?: boolean
   verified?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["companyUser"]>
@@ -661,9 +697,10 @@ export type CompanyUserSelectScalar = {
   active?: boolean
   verified?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
 }
 
-export type CompanyUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "role" | "active" | "verified" | "createdAt", ExtArgs["result"]["companyUser"]>
+export type CompanyUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "role" | "active" | "verified" | "createdAt" | "deletedAt", ExtArgs["result"]["companyUser"]>
 export type CompanyUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -683,6 +720,7 @@ export type $CompanyUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
     active: boolean
     verified: boolean
     createdAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["companyUser"]>
   composites: {}
 }
@@ -1061,6 +1099,7 @@ export interface CompanyUserFieldRefs {
   readonly active: Prisma.FieldRef<"CompanyUser", 'Boolean'>
   readonly verified: Prisma.FieldRef<"CompanyUser", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CompanyUser", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"CompanyUser", 'DateTime'>
 }
     
 

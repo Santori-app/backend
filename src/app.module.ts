@@ -36,7 +36,6 @@ import { PlansModule } from './plans/plans.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
     }),
     OfferingsModule,
     PlansModule,

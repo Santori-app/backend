@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PasswordHashUtils } from 'src/utils/PasswordHash.utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Role } from 'src/generated/prisma/enums';
-import { CreateUserBarberDto } from './dto/create-user-barber.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiError } from 'src/common/errors/api-error.exception';
 import { ErrorCode } from 'src/common/errors/error-codes.enum';
 
@@ -49,18 +50,18 @@ export class UsersService {
     return true;
   }
 
-  async createBarber(companyId: string, createUserBarberDto: CreateUserBarberDto) {
+  async createCompanyUser(companyId: string, createUserDto: CreateUserDto, role: Role) {
     return this.prisma.$transaction(async (tx) => {
-      if (!createUserBarberDto.username || !createUserBarberDto.name){
+      if (!createUserDto.username || !createUserDto.name){
         ApiError.badRequest(ErrorCode.MISSING_REQUIRED_FIELDS);
       }
 
       const createUser : CreateUser = {
-        name: createUserBarberDto.name,
-        email: createUserBarberDto.email,
-        phone: createUserBarberDto.phone,
-        username: createUserBarberDto.username,
-        password: PasswordHashUtils.toHash(createUserBarberDto.password)
+        name: createUserDto.name,
+        email: createUserDto.email,
+        phone: createUserDto.phone,
+        username: createUserDto.username,
+        password: PasswordHashUtils.toHash(createUserDto.password)
       }
 
       const user = await this.createUser(createUser);
@@ -69,14 +70,13 @@ export class UsersService {
         data: {
           userId: user.id,
           companyId,
-          role: Role.BARBER,
+          role,
         },
       });
   
       return user;
     });
   }
-  
 
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email: email } });
@@ -121,6 +121,7 @@ export class UsersService {
     const companyUsers = await this.prisma.companyUser.findMany({
       where: {
         companyId,
+        deletedAt: null,
       },
       orderBy: {
         createdAt: 'asc',
@@ -154,5 +155,116 @@ export class UsersService {
       createdAt: cu.createdAt,
     }));
   }
+
+  async update(
+    id: string,
+    companyId: string,
+    dto: UpdateUserDto,
+  ) {
+    const companyUser = await this.prisma.companyUser.findUnique({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+    });
+
+    if (!companyUser) {
+      ApiError.notFound(ErrorCode.USER_NOT_IN_COMPANY);
+    }
+
+    if (dto.email !== undefined) {
+      const existing = await this.prisma.user.findFirst({
+        where: { email: dto.email, id: { not: id } },
+      });
+      if (existing) ApiError.conflict(ErrorCode.USER_EMAIL_ALREADY_EXISTS);
+    }
+
+    if (dto.role !== undefined) {
+      await this.prisma.companyUser.update({
+        where: {
+          userId_companyId: { userId: id, companyId },
+        },
+        data: { role: dto.role },
+      });
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(dto.email !== undefined && { email: dto.email }),
+        ...(dto.phone !== undefined && { phone: dto.phone }),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        username: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  async reactivate(id: string, companyId: string) {
+    const companyUser = await this.prisma.companyUser.findUnique({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+    });
+
+    if (!companyUser) {
+      ApiError.notFound(ErrorCode.USER_NOT_IN_COMPANY);
+    }
+
+    await this.prisma.companyUser.update({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+      data: { active: true },
+    });
+
+    return { success: true };
+  }
   
+  async deactivate(id: string, companyId: string) {
+    const companyUser = await this.prisma.companyUser.findUnique({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+    });
+
+    if (!companyUser) {
+      ApiError.notFound(ErrorCode.USER_NOT_IN_COMPANY);
+    }
+
+    await this.prisma.companyUser.update({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+      data: { active: false },
+    });
+
+    return { success: true };
+  }
+
+  async remove(id: string, companyId: string) {
+    const companyUser = await this.prisma.companyUser.findUnique({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+    });
+
+    if (!companyUser) {
+      ApiError.notFound(ErrorCode.USER_NOT_IN_COMPANY);
+    }
+
+    await this.prisma.companyUser.update({
+      where: {
+        userId_companyId: { userId: id, companyId },
+      },
+      data: { deletedAt: new Date() },
+    });
+
+    return { success: true };
+  }
 }

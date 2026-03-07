@@ -34,6 +34,7 @@ export type CompanyMinAggregateOutputType = {
   groupId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type CompanyMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type CompanyMaxAggregateOutputType = {
   groupId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type CompanyCountAggregateOutputType = {
@@ -58,6 +60,7 @@ export type CompanyCountAggregateOutputType = {
   groupId: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -72,6 +75,7 @@ export type CompanyMinAggregateInputType = {
   groupId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type CompanyMaxAggregateInputType = {
@@ -84,6 +88,7 @@ export type CompanyMaxAggregateInputType = {
   groupId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type CompanyCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type CompanyCountAggregateInputType = {
   groupId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -181,6 +187,7 @@ export type CompanyGroupByOutputType = {
   groupId: string | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: CompanyCountAggregateOutputType | null
   _min: CompanyMinAggregateOutputType | null
   _max: CompanyMaxAggregateOutputType | null
@@ -214,6 +221,7 @@ export type CompanyWhereInput = {
   groupId?: Prisma.StringNullableFilter<"Company"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
   group?: Prisma.XOR<Prisma.GroupNullableScalarRelationFilter, Prisma.GroupWhereInput> | null
   users?: Prisma.CompanyUserListRelationFilter
   customers?: Prisma.CompanyCustomerListRelationFilter
@@ -231,6 +239,7 @@ export type CompanyOrderByWithRelationInput = {
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   group?: Prisma.GroupOrderByWithRelationInput
   users?: Prisma.CompanyUserOrderByRelationAggregateInput
   customers?: Prisma.CompanyCustomerOrderByRelationAggregateInput
@@ -252,6 +261,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   groupId?: Prisma.StringNullableFilter<"Company"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
   group?: Prisma.XOR<Prisma.GroupNullableScalarRelationFilter, Prisma.GroupWhereInput> | null
   users?: Prisma.CompanyUserListRelationFilter
   customers?: Prisma.CompanyCustomerListRelationFilter
@@ -269,6 +279,7 @@ export type CompanyOrderByWithAggregationInput = {
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CompanyCountOrderByAggregateInput
   _max?: Prisma.CompanyMaxOrderByAggregateInput
   _min?: Prisma.CompanyMinOrderByAggregateInput
@@ -287,6 +298,7 @@ export type CompanyScalarWhereWithAggregatesInput = {
   groupId?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
 }
 
 export type CompanyCreateInput = {
@@ -298,6 +310,7 @@ export type CompanyCreateInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   group?: Prisma.GroupCreateNestedOneWithoutCompaniesInput
   users?: Prisma.CompanyUserCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerCreateNestedManyWithoutCompanyInput
@@ -315,6 +328,7 @@ export type CompanyUncheckedCreateInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerUncheckedCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingUncheckedCreateNestedManyWithoutCompanyInput
@@ -330,6 +344,7 @@ export type CompanyUpdateInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   group?: Prisma.GroupUpdateOneWithoutCompaniesNestedInput
   users?: Prisma.CompanyUserUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUpdateManyWithoutCompanyNestedInput
@@ -347,6 +362,7 @@ export type CompanyUncheckedUpdateInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUncheckedUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUncheckedUpdateManyWithoutCompanyNestedInput
@@ -363,6 +379,7 @@ export type CompanyCreateManyInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUpdateManyMutationInput = {
@@ -374,6 +391,7 @@ export type CompanyUpdateManyMutationInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyUncheckedUpdateManyInput = {
@@ -386,6 +404,7 @@ export type CompanyUncheckedUpdateManyInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CompanyOrderByRelevanceInput = {
@@ -404,6 +423,7 @@ export type CompanyCountOrderByAggregateInput = {
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyMaxOrderByAggregateInput = {
@@ -416,6 +436,7 @@ export type CompanyMaxOrderByAggregateInput = {
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyMinOrderByAggregateInput = {
@@ -428,6 +449,7 @@ export type CompanyMinOrderByAggregateInput = {
   groupId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type CompanyScalarRelationFilter = {
@@ -447,6 +469,10 @@ export type CompanyOrderByRelationAggregateInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type CompanyCreateNestedOneWithoutUsersInput = {
@@ -556,6 +582,7 @@ export type CompanyCreateWithoutUsersInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   group?: Prisma.GroupCreateNestedOneWithoutCompaniesInput
   customers?: Prisma.CompanyCustomerCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingCreateNestedManyWithoutCompanyInput
@@ -572,6 +599,7 @@ export type CompanyUncheckedCreateWithoutUsersInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   customers?: Prisma.CompanyCustomerUncheckedCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingUncheckedCreateNestedManyWithoutCompanyInput
   plans?: Prisma.PlanUncheckedCreateNestedManyWithoutCompanyInput
@@ -602,6 +630,7 @@ export type CompanyUpdateWithoutUsersInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   group?: Prisma.GroupUpdateOneWithoutCompaniesNestedInput
   customers?: Prisma.CompanyCustomerUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUpdateManyWithoutCompanyNestedInput
@@ -618,6 +647,7 @@ export type CompanyUncheckedUpdateWithoutUsersInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customers?: Prisma.CompanyCustomerUncheckedUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUncheckedUpdateManyWithoutCompanyNestedInput
   plans?: Prisma.PlanUncheckedUpdateManyWithoutCompanyNestedInput
@@ -632,6 +662,7 @@ export type CompanyCreateWithoutOfferingsInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   group?: Prisma.GroupCreateNestedOneWithoutCompaniesInput
   users?: Prisma.CompanyUserCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerCreateNestedManyWithoutCompanyInput
@@ -648,6 +679,7 @@ export type CompanyUncheckedCreateWithoutOfferingsInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerUncheckedCreateNestedManyWithoutCompanyInput
   plans?: Prisma.PlanUncheckedCreateNestedManyWithoutCompanyInput
@@ -678,6 +710,7 @@ export type CompanyUpdateWithoutOfferingsInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   group?: Prisma.GroupUpdateOneWithoutCompaniesNestedInput
   users?: Prisma.CompanyUserUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUpdateManyWithoutCompanyNestedInput
@@ -694,6 +727,7 @@ export type CompanyUncheckedUpdateWithoutOfferingsInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUncheckedUpdateManyWithoutCompanyNestedInput
   plans?: Prisma.PlanUncheckedUpdateManyWithoutCompanyNestedInput
@@ -708,6 +742,7 @@ export type CompanyCreateWithoutPlansInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   group?: Prisma.GroupCreateNestedOneWithoutCompaniesInput
   users?: Prisma.CompanyUserCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerCreateNestedManyWithoutCompanyInput
@@ -724,6 +759,7 @@ export type CompanyUncheckedCreateWithoutPlansInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerUncheckedCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingUncheckedCreateNestedManyWithoutCompanyInput
@@ -754,6 +790,7 @@ export type CompanyUpdateWithoutPlansInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   group?: Prisma.GroupUpdateOneWithoutCompaniesNestedInput
   users?: Prisma.CompanyUserUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUpdateManyWithoutCompanyNestedInput
@@ -770,6 +807,7 @@ export type CompanyUncheckedUpdateWithoutPlansInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUncheckedUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUncheckedUpdateManyWithoutCompanyNestedInput
@@ -784,6 +822,7 @@ export type CompanyCreateWithoutCustomersInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   group?: Prisma.GroupCreateNestedOneWithoutCompaniesInput
   users?: Prisma.CompanyUserCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingCreateNestedManyWithoutCompanyInput
@@ -800,6 +839,7 @@ export type CompanyUncheckedCreateWithoutCustomersInput = {
   groupId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingUncheckedCreateNestedManyWithoutCompanyInput
   plans?: Prisma.PlanUncheckedCreateNestedManyWithoutCompanyInput
@@ -830,6 +870,7 @@ export type CompanyUpdateWithoutCustomersInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   group?: Prisma.GroupUpdateOneWithoutCompaniesNestedInput
   users?: Prisma.CompanyUserUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUpdateManyWithoutCompanyNestedInput
@@ -846,6 +887,7 @@ export type CompanyUncheckedUpdateWithoutCustomersInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUncheckedUpdateManyWithoutCompanyNestedInput
   plans?: Prisma.PlanUncheckedUpdateManyWithoutCompanyNestedInput
@@ -860,6 +902,7 @@ export type CompanyCreateWithoutGroupInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingCreateNestedManyWithoutCompanyInput
@@ -875,6 +918,7 @@ export type CompanyUncheckedCreateWithoutGroupInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   customers?: Prisma.CompanyCustomerUncheckedCreateNestedManyWithoutCompanyInput
   offerings?: Prisma.OfferingUncheckedCreateNestedManyWithoutCompanyInput
@@ -920,6 +964,7 @@ export type CompanyScalarWhereInput = {
   groupId?: Prisma.StringNullableFilter<"Company"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
 }
 
 export type CompanyCreateManyGroupInput = {
@@ -931,6 +976,7 @@ export type CompanyCreateManyGroupInput = {
   cnpj?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type CompanyUpdateWithoutGroupInput = {
@@ -942,6 +988,7 @@ export type CompanyUpdateWithoutGroupInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUpdateManyWithoutCompanyNestedInput
@@ -957,6 +1004,7 @@ export type CompanyUncheckedUpdateWithoutGroupInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   customers?: Prisma.CompanyCustomerUncheckedUpdateManyWithoutCompanyNestedInput
   offerings?: Prisma.OfferingUncheckedUpdateManyWithoutCompanyNestedInput
@@ -972,6 +1020,7 @@ export type CompanyUncheckedUpdateManyWithoutGroupInput = {
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1042,6 +1091,7 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   group?: boolean | Prisma.Company$groupArgs<ExtArgs>
   users?: boolean | Prisma.Company$usersArgs<ExtArgs>
   customers?: boolean | Prisma.Company$customersArgs<ExtArgs>
@@ -1062,9 +1112,10 @@ export type CompanySelectScalar = {
   groupId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "active" | "legalName" | "cnpj" | "groupId" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "active" | "legalName" | "cnpj" | "groupId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.Company$groupArgs<ExtArgs>
   users?: boolean | Prisma.Company$usersArgs<ExtArgs>
@@ -1093,6 +1144,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     groupId: string | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["company"]>
   composites: {}
 }
@@ -1476,6 +1528,7 @@ export interface CompanyFieldRefs {
   readonly groupId: Prisma.FieldRef<"Company", 'String'>
   readonly createdAt: Prisma.FieldRef<"Company", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Company", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Company", 'DateTime'>
 }
     
 

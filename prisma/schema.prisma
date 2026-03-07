@@ -48,6 +48,7 @@ model Company {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 
@@ -65,6 +66,7 @@ model CompanyUser {
   company   Company  @relation(fields: [companyId], references: [id])
 
   createdAt DateTime @default(now())
+  deletedAt DateTime?
 
   @@unique([userId, companyId])
 }

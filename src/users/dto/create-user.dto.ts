@@ -1,6 +1,6 @@
 import { IsEmail, IsString, Matches, MaxLength, MinLength, IsOptional } from 'class-validator';
 
-export class CreateUserBarberDto {
+export class CreateUserDto {
   @MaxLength(100)
   name: string;
   

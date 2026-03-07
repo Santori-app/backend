@@ -49,6 +49,14 @@ export class AuthService {
       ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
     }
 
+    if (!companyUser.verified) {
+      return {
+        needsVerification: true,
+        userId: user.id,
+        companyId: company.id,
+      };
+    }
+
     delete user.password;
 
     return {
@@ -58,6 +66,77 @@ export class AuthService {
       companyId: company.id,
       role: companyUser.role,
     };
+  }
+
+  getRequiresVerificationResponse(payload: {
+    userId: string;
+    companyId: string;
+  }): { requiresVerification: true; verificationToken: string } {
+    const verificationToken = this.jwtService.sign(
+      {
+        sub: payload.userId,
+        companyId: payload.companyId,
+        purpose: 'account_verification',
+      },
+      { expiresIn: '15m' },
+    );
+    return {
+      requiresVerification: true,
+      verificationToken,
+    };
+  }
+
+  async completeVerification(verificationToken: string, newPassword: string): Promise<{ access_token: string }> {
+    let payload: { sub: string; companyId: string; purpose: string } | null = null;
+
+    try {
+      payload = this.jwtService.verify<{
+        sub: string;
+        companyId: string;
+        purpose: string;
+      }>(verificationToken);
+    } catch {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    if (!payload || payload.purpose !== 'account_verification') {
+      ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    const hashedPassword = PasswordHashUtils.toHash(newPassword);
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: payload.sub },
+        data: { password: hashedPassword },
+      }),
+      this.prisma.companyUser.update({
+        where: {
+          userId_companyId: {
+            userId: payload.sub,
+            companyId: payload.companyId,
+          },
+        },
+        data: { verified: true },
+      }),
+    ]);
+
+    const companies = await this.getUserCompanies(payload.sub);
+
+    const companyEntry = companies.find((c) => c.id === payload.companyId);
+
+    if (!companyEntry) ApiError.unauthorized(ErrorCode.INVALID_CREDENTIALS);
+
+    const jwtPayload = {
+      sub: payload.sub,
+      role: companyEntry.role,
+      companyId: companyEntry.id,
+      companyName: companyEntry.name,
+    };
+
+    const access_token = this.jwtService.sign(jwtPayload);
+    
+    return { access_token };
   }
 
   async getUserCompanies(userId: string) {
