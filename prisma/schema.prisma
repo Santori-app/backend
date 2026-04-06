@@ -23,9 +23,11 @@ model User {
   password       String?
 
   memberships    CompanyUser[]
+  appointments   Appointment[]
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
 }
 
 model Company {
@@ -41,10 +43,11 @@ model Company {
   groupId   String?
   group     Group?  @relation(fields: [groupId], references: [id])
 
-  users     CompanyUser[]
-  customers CompanyCustomer[]
-  offerings Offering[]
-  plans     Plan[]
+  appointments  Appointment[]
+  users         CompanyUser[]
+  customers     CompanyCustomer[]
+  offerings     Offering[]
+  plans         Plan[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,16 +83,18 @@ model Offering {
   type              OfferingType
   
   price             Int        // em centavos
-  timeToExecute     Int?       // minutos
+  timeToExecute     Int        // minutos
 
   commissionPercent Int?        // 1 a 100
 
   active            Boolean    @default(true)
 
   planServices      PlanService[]
+  appointments      Appointment[]
 
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
+  deletedAt         DateTime?
 
   company           Company  @relation(fields: [companyId], references: [id])
 
@@ -130,15 +135,18 @@ model PlanService {
 model Customer {
   id        String   @id @default(uuid())
   name      String
-  email     String?  @unique
-  phone     String?  @db.VarChar(20)
+  email     String?
+  phone     String   @db.VarChar(20) @default("") @unique
   birthDate DateTime?
   active    Boolean  @default(true)
 
-  companies CompanyCustomer[]
+  appointments  Appointment[]
+  companies     CompanyCustomer[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
 }
 
 model CompanyCustomer {
@@ -155,6 +163,9 @@ model CompanyCustomer {
   company     Company  @relation(fields: [companyId], references: [id])
 
   @@unique([customerId, companyId])
+
+  @@index([companyId])
+  @@index([customerId])
 }
 
 model Group {
@@ -166,6 +177,36 @@ model Group {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id           String   @id @default(uuid())
+
+  companyId    String
+  customerId   String
+  barberId     String
+  offeringId   String
+
+  startAt      DateTime
+  endAt        DateTime
+
+  status       AppointmentStatus @default(SCHEDULED)
+
+  price        Int
+
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+
+  company      Company   @relation(fields: [companyId], references: [id])
+  customer     Customer  @relation(fields: [customerId], references: [id])
+  barber       User      @relation(fields: [barberId], references: [id])
+  offering     Offering  @relation(fields: [offeringId], references: [id])
+
+  @@index([companyId])
+  @@index([barberId, startAt])
 }
 
 enum Role {
@@ -187,4 +228,12 @@ enum PlanCycle {
 enum OfferingType {
   SERVICE
   PRODUCT
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELED
+  NO_SHOW
 }

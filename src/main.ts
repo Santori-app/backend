@@ -17,6 +17,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173',
+      'http://localhost:5174',
       'https://web-production-2678d.up.railway.app'
     ],
     credentials: true,

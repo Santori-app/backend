@@ -156,6 +156,38 @@ export class UsersService {
     }));
   }
 
+  async publicFindAll(companyId: string) {
+    if (!companyId) {
+      ApiError.badRequest(ErrorCode.COMPANY_CONTEXT_REQUIRED);
+    }
+
+    const companyUsers = await this.prisma.companyUser.findMany({
+      where: {
+        companyId,
+        deletedAt: null,
+        active: true,
+        role: "BARBER",
+        verified: true
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      select: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      }      
+    });
+
+    return companyUsers.map((cu) => ({
+      id: cu.user.id,
+      name: cu.user.name,
+    }));
+  }
+
   async update(
     id: string,
     companyId: string,

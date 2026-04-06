@@ -18,6 +18,8 @@ import { redisStore } from 'cache-manager-redis-yet';
         const parsedPort = Number(redisPortEnv);
         const redisPort = Number.isFinite(parsedPort) ? parsedPort : 6379;
 
+        console.log('redisHost', redisHost);
+        console.log('redisPort', redisPort);
         const store = await redisStore({
           socket: {
             host: redisHost,

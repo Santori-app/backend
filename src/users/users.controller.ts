@@ -7,6 +7,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/generated/prisma/enums';
 import { RolesGuard } from 'src/auth/guards/role.guard';
+import { IsPublic } from 'src/decorators/is-public.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -50,6 +51,12 @@ export class UsersController {
   @Roles(Role.ADMIN, Role.MANAGER)
   findAll(@CurrentUser() user: CurrentUserEntity) {
     return this.usersService.findAll(user.companyId);
+  }
+
+  @Get("public/barbers/:companyId")
+  @IsPublic()
+  publicFindAll(@Param('companyId') companyId: string) {
+    return this.usersService.publicFindAll(companyId);
   }
 
   @Patch(':id')

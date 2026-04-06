@@ -82,3 +82,8 @@ export type CompanyCustomer = Prisma.CompanyCustomerModel
  * 
  */
 export type Group = Prisma.GroupModel
+/**
+ * Model Appointment
+ * 
+ */
+export type Appointment = Prisma.AppointmentModel

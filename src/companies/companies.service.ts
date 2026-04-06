@@ -100,7 +100,7 @@ export class CompaniesService {
   }
 
   async findBySlug(slug: string) {
-    return this.prisma.company.findFirst({
+    return this.prisma.company.findUnique({
       where: {
         slug,
         active: true,

@@ -50,6 +50,7 @@ export type OfferingMinAggregateOutputType = {
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type OfferingMaxAggregateOutputType = {
@@ -64,6 +65,7 @@ export type OfferingMaxAggregateOutputType = {
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type OfferingCountAggregateOutputType = {
@@ -78,6 +80,7 @@ export type OfferingCountAggregateOutputType = {
   active: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -106,6 +109,7 @@ export type OfferingMinAggregateInputType = {
   active?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type OfferingMaxAggregateInputType = {
@@ -120,6 +124,7 @@ export type OfferingMaxAggregateInputType = {
   active?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type OfferingCountAggregateInputType = {
@@ -134,6 +139,7 @@ export type OfferingCountAggregateInputType = {
   active?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -230,11 +236,12 @@ export type OfferingGroupByOutputType = {
   description: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute: number | null
+  timeToExecute: number
   commissionPercent: number | null
   active: boolean
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: OfferingCountAggregateOutputType | null
   _avg: OfferingAvgAggregateOutputType | null
   _sum: OfferingSumAggregateOutputType | null
@@ -267,12 +274,14 @@ export type OfferingWhereInput = {
   description?: Prisma.StringNullableFilter<"Offering"> | string | null
   type?: Prisma.EnumOfferingTypeFilter<"Offering"> | $Enums.OfferingType
   price?: Prisma.IntFilter<"Offering"> | number
-  timeToExecute?: Prisma.IntNullableFilter<"Offering"> | number | null
+  timeToExecute?: Prisma.IntFilter<"Offering"> | number
   commissionPercent?: Prisma.IntNullableFilter<"Offering"> | number | null
   active?: Prisma.BoolFilter<"Offering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Offering"> | Date | string | null
   planServices?: Prisma.PlanServiceListRelationFilter
+  appointments?: Prisma.AppointmentListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -283,12 +292,14 @@ export type OfferingOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   price?: Prisma.SortOrder
-  timeToExecute?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeToExecute?: Prisma.SortOrder
   commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   planServices?: Prisma.PlanServiceOrderByRelationAggregateInput
+  appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
   _relevance?: Prisma.OfferingOrderByRelevanceInput
 }
@@ -303,12 +314,14 @@ export type OfferingWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Offering"> | string | null
   type?: Prisma.EnumOfferingTypeFilter<"Offering"> | $Enums.OfferingType
   price?: Prisma.IntFilter<"Offering"> | number
-  timeToExecute?: Prisma.IntNullableFilter<"Offering"> | number | null
+  timeToExecute?: Prisma.IntFilter<"Offering"> | number
   commissionPercent?: Prisma.IntNullableFilter<"Offering"> | number | null
   active?: Prisma.BoolFilter<"Offering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Offering"> | Date | string | null
   planServices?: Prisma.PlanServiceListRelationFilter
+  appointments?: Prisma.AppointmentListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
@@ -319,11 +332,12 @@ export type OfferingOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   price?: Prisma.SortOrder
-  timeToExecute?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeToExecute?: Prisma.SortOrder
   commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OfferingCountOrderByAggregateInput
   _avg?: Prisma.OfferingAvgOrderByAggregateInput
   _max?: Prisma.OfferingMaxOrderByAggregateInput
@@ -341,11 +355,12 @@ export type OfferingScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Offering"> | string | null
   type?: Prisma.EnumOfferingTypeWithAggregatesFilter<"Offering"> | $Enums.OfferingType
   price?: Prisma.IntWithAggregatesFilter<"Offering"> | number
-  timeToExecute?: Prisma.IntNullableWithAggregatesFilter<"Offering"> | number | null
+  timeToExecute?: Prisma.IntWithAggregatesFilter<"Offering"> | number
   commissionPercent?: Prisma.IntNullableWithAggregatesFilter<"Offering"> | number | null
   active?: Prisma.BoolWithAggregatesFilter<"Offering"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Offering"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Offering"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Offering"> | Date | string | null
 }
 
 export type OfferingCreateInput = {
@@ -354,12 +369,14 @@ export type OfferingCreateInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   planServices?: Prisma.PlanServiceCreateNestedManyWithoutOfferingInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutOfferingInput
   company: Prisma.CompanyCreateNestedOneWithoutOfferingsInput
 }
 
@@ -370,12 +387,14 @@ export type OfferingUncheckedCreateInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   planServices?: Prisma.PlanServiceUncheckedCreateNestedManyWithoutOfferingInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutOfferingInput
 }
 
 export type OfferingUpdateInput = {
@@ -384,12 +403,14 @@ export type OfferingUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   planServices?: Prisma.PlanServiceUpdateManyWithoutOfferingNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutOfferingNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutOfferingsNestedInput
 }
 
@@ -400,12 +421,14 @@ export type OfferingUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   planServices?: Prisma.PlanServiceUncheckedUpdateManyWithoutOfferingNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutOfferingNestedInput
 }
 
 export type OfferingCreateManyInput = {
@@ -415,11 +438,12 @@ export type OfferingCreateManyInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type OfferingUpdateManyMutationInput = {
@@ -428,11 +452,12 @@ export type OfferingUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type OfferingUncheckedUpdateManyInput = {
@@ -442,11 +467,12 @@ export type OfferingUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type OfferingListRelationFilter = {
@@ -477,6 +503,7 @@ export type OfferingCountOrderByAggregateInput = {
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type OfferingAvgOrderByAggregateInput = {
@@ -497,6 +524,7 @@ export type OfferingMaxOrderByAggregateInput = {
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type OfferingMinOrderByAggregateInput = {
@@ -511,6 +539,7 @@ export type OfferingMinOrderByAggregateInput = {
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type OfferingSumOrderByAggregateInput = {
@@ -600,18 +629,34 @@ export type OfferingUpdateOneRequiredWithoutPlanServicesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OfferingUpdateToOneWithWhereWithoutPlanServicesInput, Prisma.OfferingUpdateWithoutPlanServicesInput>, Prisma.OfferingUncheckedUpdateWithoutPlanServicesInput>
 }
 
+export type OfferingCreateNestedOneWithoutAppointmentsInput = {
+  create?: Prisma.XOR<Prisma.OfferingCreateWithoutAppointmentsInput, Prisma.OfferingUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.OfferingCreateOrConnectWithoutAppointmentsInput
+  connect?: Prisma.OfferingWhereUniqueInput
+}
+
+export type OfferingUpdateOneRequiredWithoutAppointmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OfferingCreateWithoutAppointmentsInput, Prisma.OfferingUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.OfferingCreateOrConnectWithoutAppointmentsInput
+  upsert?: Prisma.OfferingUpsertWithoutAppointmentsInput
+  connect?: Prisma.OfferingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OfferingUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.OfferingUpdateWithoutAppointmentsInput>, Prisma.OfferingUncheckedUpdateWithoutAppointmentsInput>
+}
+
 export type OfferingCreateWithoutCompanyInput = {
   id?: string
   name: string
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   planServices?: Prisma.PlanServiceCreateNestedManyWithoutOfferingInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutOfferingInput
 }
 
 export type OfferingUncheckedCreateWithoutCompanyInput = {
@@ -620,12 +665,14 @@ export type OfferingUncheckedCreateWithoutCompanyInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   planServices?: Prisma.PlanServiceUncheckedCreateNestedManyWithoutOfferingInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutOfferingInput
 }
 
 export type OfferingCreateOrConnectWithoutCompanyInput = {
@@ -664,11 +711,12 @@ export type OfferingScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Offering"> | string | null
   type?: Prisma.EnumOfferingTypeFilter<"Offering"> | $Enums.OfferingType
   price?: Prisma.IntFilter<"Offering"> | number
-  timeToExecute?: Prisma.IntNullableFilter<"Offering"> | number | null
+  timeToExecute?: Prisma.IntFilter<"Offering"> | number
   commissionPercent?: Prisma.IntNullableFilter<"Offering"> | number | null
   active?: Prisma.BoolFilter<"Offering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Offering"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Offering"> | Date | string | null
 }
 
 export type OfferingCreateWithoutPlanServicesInput = {
@@ -677,11 +725,13 @@ export type OfferingCreateWithoutPlanServicesInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutOfferingInput
   company: Prisma.CompanyCreateNestedOneWithoutOfferingsInput
 }
 
@@ -692,11 +742,13 @@ export type OfferingUncheckedCreateWithoutPlanServicesInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutOfferingInput
 }
 
 export type OfferingCreateOrConnectWithoutPlanServicesInput = {
@@ -721,11 +773,13 @@ export type OfferingUpdateWithoutPlanServicesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutOfferingNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutOfferingsNestedInput
 }
 
@@ -736,11 +790,93 @@ export type OfferingUncheckedUpdateWithoutPlanServicesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutOfferingNestedInput
+}
+
+export type OfferingCreateWithoutAppointmentsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  type: $Enums.OfferingType
+  price: number
+  timeToExecute: number
+  commissionPercent?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  planServices?: Prisma.PlanServiceCreateNestedManyWithoutOfferingInput
+  company: Prisma.CompanyCreateNestedOneWithoutOfferingsInput
+}
+
+export type OfferingUncheckedCreateWithoutAppointmentsInput = {
+  id?: string
+  companyId: string
+  name: string
+  description?: string | null
+  type: $Enums.OfferingType
+  price: number
+  timeToExecute: number
+  commissionPercent?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  planServices?: Prisma.PlanServiceUncheckedCreateNestedManyWithoutOfferingInput
+}
+
+export type OfferingCreateOrConnectWithoutAppointmentsInput = {
+  where: Prisma.OfferingWhereUniqueInput
+  create: Prisma.XOR<Prisma.OfferingCreateWithoutAppointmentsInput, Prisma.OfferingUncheckedCreateWithoutAppointmentsInput>
+}
+
+export type OfferingUpsertWithoutAppointmentsInput = {
+  update: Prisma.XOR<Prisma.OfferingUpdateWithoutAppointmentsInput, Prisma.OfferingUncheckedUpdateWithoutAppointmentsInput>
+  create: Prisma.XOR<Prisma.OfferingCreateWithoutAppointmentsInput, Prisma.OfferingUncheckedCreateWithoutAppointmentsInput>
+  where?: Prisma.OfferingWhereInput
+}
+
+export type OfferingUpdateToOneWithWhereWithoutAppointmentsInput = {
+  where?: Prisma.OfferingWhereInput
+  data: Prisma.XOR<Prisma.OfferingUpdateWithoutAppointmentsInput, Prisma.OfferingUncheckedUpdateWithoutAppointmentsInput>
+}
+
+export type OfferingUpdateWithoutAppointmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
+  commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  planServices?: Prisma.PlanServiceUpdateManyWithoutOfferingNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutOfferingsNestedInput
+}
+
+export type OfferingUncheckedUpdateWithoutAppointmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
+  commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  planServices?: Prisma.PlanServiceUncheckedUpdateManyWithoutOfferingNestedInput
 }
 
 export type OfferingCreateManyCompanyInput = {
@@ -749,11 +885,12 @@ export type OfferingCreateManyCompanyInput = {
   description?: string | null
   type: $Enums.OfferingType
   price: number
-  timeToExecute?: number | null
+  timeToExecute: number
   commissionPercent?: number | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type OfferingUpdateWithoutCompanyInput = {
@@ -762,12 +899,14 @@ export type OfferingUpdateWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   planServices?: Prisma.PlanServiceUpdateManyWithoutOfferingNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutOfferingNestedInput
 }
 
 export type OfferingUncheckedUpdateWithoutCompanyInput = {
@@ -776,12 +915,14 @@ export type OfferingUncheckedUpdateWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   planServices?: Prisma.PlanServiceUncheckedUpdateManyWithoutOfferingNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutOfferingNestedInput
 }
 
 export type OfferingUncheckedUpdateManyWithoutCompanyInput = {
@@ -790,11 +931,12 @@ export type OfferingUncheckedUpdateManyWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumOfferingTypeFieldUpdateOperationsInput | $Enums.OfferingType
   price?: Prisma.IntFieldUpdateOperationsInput | number
-  timeToExecute?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeToExecute?: Prisma.IntFieldUpdateOperationsInput | number
   commissionPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -804,10 +946,12 @@ export type OfferingUncheckedUpdateManyWithoutCompanyInput = {
 
 export type OfferingCountOutputType = {
   planServices: number
+  appointments: number
 }
 
 export type OfferingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   planServices?: boolean | OfferingCountOutputTypeCountPlanServicesArgs
+  appointments?: boolean | OfferingCountOutputTypeCountAppointmentsArgs
 }
 
 /**
@@ -827,6 +971,13 @@ export type OfferingCountOutputTypeCountPlanServicesArgs<ExtArgs extends runtime
   where?: Prisma.PlanServiceWhereInput
 }
 
+/**
+ * OfferingCountOutputType without action
+ */
+export type OfferingCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppointmentWhereInput
+}
+
 
 export type OfferingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -840,7 +991,9 @@ export type OfferingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   planServices?: boolean | Prisma.Offering$planServicesArgs<ExtArgs>
+  appointments?: boolean | Prisma.Offering$appointmentsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.OfferingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["offering"]>
@@ -859,11 +1012,13 @@ export type OfferingSelectScalar = {
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type OfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "name" | "description" | "type" | "price" | "timeToExecute" | "commissionPercent" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["offering"]>
+export type OfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "name" | "description" | "type" | "price" | "timeToExecute" | "commissionPercent" | "active" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["offering"]>
 export type OfferingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   planServices?: boolean | Prisma.Offering$planServicesArgs<ExtArgs>
+  appointments?: boolean | Prisma.Offering$appointmentsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.OfferingCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -872,6 +1027,7 @@ export type $OfferingPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Offering"
   objects: {
     planServices: Prisma.$PlanServicePayload<ExtArgs>[]
+    appointments: Prisma.$AppointmentPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -881,11 +1037,12 @@ export type $OfferingPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     description: string | null
     type: $Enums.OfferingType
     price: number
-    timeToExecute: number | null
+    timeToExecute: number
     commissionPercent: number | null
     active: boolean
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["offering"]>
   composites: {}
 }
@@ -1227,6 +1384,7 @@ readonly fields: OfferingFieldRefs;
 export interface Prisma__OfferingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   planServices<T extends Prisma.Offering$planServicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Offering$planServicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appointments<T extends Prisma.Offering$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Offering$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1268,6 +1426,7 @@ export interface OfferingFieldRefs {
   readonly active: Prisma.FieldRef<"Offering", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Offering", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Offering", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Offering", 'DateTime'>
 }
     
 
@@ -1632,6 +1791,30 @@ export type Offering$planServicesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.PlanServiceScalarFieldEnum | Prisma.PlanServiceScalarFieldEnum[]
+}
+
+/**
+ * Offering.appointments
+ */
+export type Offering$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appointment
+   */
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appointment
+   */
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
+  where?: Prisma.AppointmentWhereInput
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
+  cursor?: Prisma.AppointmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**

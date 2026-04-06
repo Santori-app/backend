@@ -15,6 +15,7 @@ import { AppThrottlerGuard } from './auth/guards/throttler-guard';
 import { ConfigModule } from '@nestjs/config';
 import { OfferingsModule } from './offerings/offerings.module';
 import { PlansModule } from './plans/plans.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PlansModule } from './plans/plans.module';
     }),
     OfferingsModule,
     PlansModule,
+    AppointmentsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -59,4 +59,18 @@ export class OfferingsService {
 
     return offerings;
   }
+
+  async findByCompanyId(companyId: string) {
+    const offerings = await this.prisma.offering.findMany({
+      where: {
+        companyId,
+        active: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    return offerings;
+  }
 }
